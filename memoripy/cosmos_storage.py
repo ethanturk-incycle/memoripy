@@ -74,13 +74,23 @@ class CosmosStorage(BaseStorage):
         endpoint = _get_cosmos_endpoint()
         key = _get_cosmos_key()
         
-        if not endpoint or not key:
+        if not endpoint:
             raise ValueError(
                 "Azure Cosmos DB configuration missing. "
-                "Please set MEMORIPY_COSMOS_ENDPOINT and MEMORIPY_COSMOS_KEY."
+                "Please set MEMORIPY_COSMOS_ENDPOINT."
             )
-            
-        self.client = CosmosClient(endpoint, credential=key)
+        
+        if key:
+            self.client = CosmosClient(endpoint, credential=key)
+        else:
+            try:
+                from azure.identity import DefaultAzureCredential
+                self.client = CosmosClient(endpoint, credential=DefaultAzureCredential())
+            except ImportError:
+                raise ImportError(
+                    "azure-identity package is required for MSI/DefaultAzureCredential authentication. "
+                    "Please install it with `pip install azure-identity`."
+                )
         self.database_name = _get_cosmos_database()
         self.container_name = _get_cosmos_container()
         

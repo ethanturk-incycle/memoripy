@@ -122,6 +122,8 @@ Memoripy relies on several dependencies, including:
 
 - `ollama`
 
+- `azure-identity` (for Azure Managed Identity support)
+
 These dependencies will be installed automatically with pip install memoripy.
 
 ## License
