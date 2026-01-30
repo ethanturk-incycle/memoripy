@@ -3,6 +3,8 @@
 .env
 *.db
 .gitconfig
+openspec
+.gemini
 
 # Python cache
 __pycache__/
